@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-const Image = (props) => {
-  return <img src={props.src} alt={props.title} />;
-};
+const char = {
+      "id": 1,
+      "name": "Rick Sanchez",
+      "status": "Alive",
+      "species": "Human",
+      "type": "",
+      "gender": "Male",
+      "origin": {
+        "name": "Earth",
+        "url": "https://rickandmortyapi.com/api/location/1"
+      },
+      "location": {
+        "name": "Earth",
+        "url": "https://rickandmortyapi.com/api/location/20"
+      },
+      "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+      "episode": [
+        "https://rickandmortyapi.com/api/episode/1",
+        "https://rickandmortyapi.com/api/episode/2",
+        // ...
+      ],
+      "url": "https://rickandmortyapi.com/api/character/1",
+      "created": "2017-11-04T18:48:46.250Z"
+    }
 
-// const Card = ({ character }) => {
-//   const { name, image, species, status } = character;
+// const Card =  (props) => {
+//     const { name, image, species, status } = props.character;
+//   const handleClick = () => {
+//     console.log('char', props.character);
+//   }
 //   return (
 //     <div className="card">
-//       <Image src={image} alt={name} />
+//       <img src={image} alt="img" onClick={handleClick} />
 //       <h2>{name}</h2>
 //       <p>
 //         {species} - {status}
@@ -18,39 +42,38 @@ const Image = (props) => {
 //   );
 // };
 
+// 
+
 class Card extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = () => {
+    console.log('char', this.props.character);
+  }
+
   render() {
     const { name, image, species, status } = this.props.character;
-     return (
-    <div className="card">
-      <Image src={image} alt={name} />
-      <h2>{name}</h2>
-      <p>
-        {species} - {status}
-      </p>
-    </div>
-  );
+    return (
+      <div className="card">
+        <img src={image} alt="img" onClick={this.handleClick} />
+        <h2>{name}</h2>
+        <p>{species} - {status}</p>
+      </div>
+    );
+  }
 }
-}
+
 
 const App = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character")
-      .then((res) => res.json())
-      .then((body) => {
-        setData(body.results);
-      });
-  }, []);
   return (
     <section className="card-section">
-      {data.map((el, index) => {
-        return <Card character={el} key={index} />
-      })
-      }
+      <Card character={char} key={char.id} />
     </section>
   );
 };
+
 
 export default App;
