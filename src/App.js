@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { Button, TextField } from "@mui/material";
 
 const char = {
-      "id": 1,
-      "name": "Rick Sanchez",
-      "status": "Alive",
-      "species": "Human",
-      "type": "",
-      "gender": "Male",
-      "origin": {
-        "name": "Earth",
-        "url": "https://rickandmortyapi.com/api/location/1"
-      },
-      "location": {
-        "name": "Earth",
-        "url": "https://rickandmortyapi.com/api/location/20"
-      },
-      "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-      "episode": [
-        "https://rickandmortyapi.com/api/episode/1",
-        "https://rickandmortyapi.com/api/episode/2",
-        // ...
-      ],
-      "url": "https://rickandmortyapi.com/api/character/1",
-      "created": "2017-11-04T18:48:46.250Z"
-    }
+  id: 1,
+  name: "Rick Sanchez",
+  status: "Alive",
+  species: "Human",
+  type: "",
+  gender: "Male",
+  origin: {
+    name: "Earth",
+    url: "https://rickandmortyapi.com/api/location/1",
+  },
+  location: {
+    name: "Earth",
+    url: "https://rickandmortyapi.com/api/location/20",
+  },
+  image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+  episode: [
+    "https://rickandmortyapi.com/api/episode/1",
+    "https://rickandmortyapi.com/api/episode/2",
+    // ...
+  ],
+  url: "https://rickandmortyapi.com/api/character/1",
+  created: "2017-11-04T18:48:46.250Z",
+};
 
 // const Card =  (props) => {
 //     const { name, image, species, status } = props.character;
@@ -42,7 +43,7 @@ const char = {
 //   );
 // };
 
-// 
+//
 
 class Card extends React.Component {
   constructor(props) {
@@ -51,8 +52,8 @@ class Card extends React.Component {
   }
 
   handleClick = () => {
-    console.log('char', this.props.character);
-  }
+    console.log("char", this.props.character);
+  };
 
   render() {
     const { name, image, species, status } = this.props.character;
@@ -60,20 +61,46 @@ class Card extends React.Component {
       <div className="card">
         <img src={image} alt="img" onClick={this.handleClick} />
         <h2>{name}</h2>
-        <p>{species} - {status}</p>
+        <p>
+          {species} - {status}
+        </p>
       </div>
     );
   }
 }
 
+class App extends React.Component {
 
-const App = () => {
-  return (
-    <section className="card-section">
-      <Card character={char} key={char.id} />
-    </section>
-  );
-};
+constructor() {
+    super();
+    this.state = {
+      username: ''
+    }
+  }
 
+  handleChange = (e) => {
+    console.log(e.target.value);
+    this.setState({ username: e.target.value });
+  };
+  render() {
+    return (
+      // <section className="card-section">
+      //   <Card character={char} key={char.id} />
+      // </section>
+      <>
+        <form>
+          <h2>{this.state.username}</h2>
+          <TextField
+            value={this.state.username}
+            onChange={this.handleChange}
+            id="outlined-basic"
+            label="Outlined"
+            variant="outlined"
+          />
+        </form>
+      </>
+    );
+  }
+}
 
 export default App;
