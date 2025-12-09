@@ -92,6 +92,36 @@ class App extends React.Component {
     };
   }
 
+    isFormValid = () => {
+    const { username, name, surname, gender, age } = this.state;
+
+    const allFilled =
+      username.trim() !== "" &&
+      name.trim() !== "" &&
+      surname.trim() !== "" &&
+      gender !== "" &&
+      age !== "";
+
+    return allFilled;
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (!this.isFormValid()) return;
+
+    const result = {
+      username: this.state.username,
+      name: this.state.name,
+      surname: this.state.surname,
+      subscribed: this.state.subscribed,
+      gender: this.state.gender,
+      age: this.state.age,
+    };
+
+    console.log(result);
+  };
+
+
   handleChange = (e) => {
     console.log("event", e);
     const { value, name, checked, target, type } = e.target;
@@ -181,6 +211,14 @@ class App extends React.Component {
               <MenuItem value={30}>30</MenuItem>
             </Select>
           </FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={!this.isFormValid()}
+          >
+            Invia
+          </Button>
         </form>
       </>
     );
