@@ -74,13 +74,18 @@ class App extends React.Component {
 constructor() {
     super();
     this.state = {
-      username: ''
+      username: '',
+      name: '',
+      surname: ''
     }
   }
 
   handleChange = (e) => {
-    console.log(e.target.value);
-    this.setState({ username: e.target.value });
+    console.log('event', e);
+    // this.setState({ username: e.target.value });
+    this.setState(prevSteate => {
+      return { ...prevSteate, [e.target.name]: e.target.value }
+    });
   };
   render() {
     return (
@@ -93,9 +98,23 @@ constructor() {
           <TextField
             value={this.state.username}
             onChange={this.handleChange}
-            id="outlined-basic"
-            label="Outlined"
+            label="username"
             variant="outlined"
+            name="username"
+          />
+          <TextField
+            value={this.state.name}
+            onChange={this.handleChange}
+            label="name"
+            variant="outlined"
+            name="name"
+          />
+          <TextField
+            value={this.state.surname}
+            onChange={this.handleChange}
+            label="surname"
+            variant="outlined"
+            name="surname"
           />
         </form>
       </>
