@@ -6,6 +6,10 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
 } from "@mui/material";
 
 const char = {
@@ -83,23 +87,20 @@ class App extends React.Component {
       name: "",
       surname: "",
       subscribed: false,
-      gender: ""
+      gender: "",
+      age: "",
     };
   }
 
   handleChange = (e) => {
     console.log("event", e);
-    const { value, name, checked, target } = e.target;
+    const { value, name, checked, target, type } = e.target;
     // this.setState({ username: e.target.value });
-    if (e.target.type === "checkbox") {
-      this.setState((prevSteate) => {
-        return { ...prevSteate, [name]: checked };
+    // const test = condizione ? valoreSeVero : valoreSeFalso
+      this.setState(prevSteate => {
+        return { ...prevSteate, [name]: type === 'checkbox' ? checked : value
+        };
       });
-    } else {
-      this.setState((prevSteate) => {
-        return { ...prevSteate, [name]: value };
-      });
-    }
   };
   render() {
     return (
@@ -108,7 +109,7 @@ class App extends React.Component {
       // </section>
       <>
         <h2>{this.state.username}</h2>
-        <form style={{ display: "flex", flexDirection: "column"}}>
+        <form style={{ display: "flex", flexDirection: "column" }}>
           <TextField
             value={this.state.username}
             onChange={this.handleChange}
@@ -143,11 +144,43 @@ class App extends React.Component {
             label="Subscribed"
           />
           <label>Male</label>
-          <input type="radio" name="gender" value="male" onChange={this.handleChange}></input>
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            onChange={this.handleChange}
+          ></input>
           <label>Female</label>
-          <input type="radio" name="gender" value="female" onChange={this.handleChange}></input>
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            onChange={this.handleChange}
+          ></input>
           <label>Other</label>
-          <input type="radio" name="gender" value="other" onChange={this.handleChange}></input>
+          <input
+            type="radio"
+            name="gender"
+            value="other"
+            onChange={this.handleChange}
+          ></input>
+          <FormControl>
+            <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              value={this.state.age}
+              onChange={this.handleChange}
+              name="age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
+            </Select>
+          </FormControl>
         </form>
       </>
     );
