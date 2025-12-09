@@ -82,13 +82,14 @@ class App extends React.Component {
       username: "",
       name: "",
       surname: "",
-      subscribed: false
+      subscribed: false,
+      gender: ""
     };
   }
 
   handleChange = (e) => {
     console.log("event", e);
-    const {value, name, checked, target} = e.target;
+    const { value, name, checked, target } = e.target;
     // this.setState({ username: e.target.value });
     if (e.target.type === "checkbox") {
       this.setState((prevSteate) => {
@@ -96,8 +97,7 @@ class App extends React.Component {
       });
     } else {
       this.setState((prevSteate) => {
-        return { ...prevSteate, [name]: value 
-        };
+        return { ...prevSteate, [name]: value };
       });
     }
   };
@@ -107,8 +107,8 @@ class App extends React.Component {
       //   <Card character={char} key={char.id} />
       // </section>
       <>
-        <form>
-          <h2>{this.state.username}</h2>
+        <h2>{this.state.username}</h2>
+        <form style={{ display: "flex", flexDirection: "column"}}>
           <TextField
             value={this.state.username}
             onChange={this.handleChange}
@@ -142,6 +142,12 @@ class App extends React.Component {
             }
             label="Subscribed"
           />
+          <label>Male</label>
+          <input type="radio" name="gender" value="male" onChange={this.handleChange}></input>
+          <label>Female</label>
+          <input type="radio" name="gender" value="female" onChange={this.handleChange}></input>
+          <label>Other</label>
+          <input type="radio" name="gender" value="other" onChange={this.handleChange}></input>
         </form>
       </>
     );
