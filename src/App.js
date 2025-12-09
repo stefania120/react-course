@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  FormGroup,
+} from "@mui/material";
 
 const char = {
   id: 1,
@@ -70,22 +76,30 @@ class Card extends React.Component {
 }
 
 class App extends React.Component {
-
-constructor() {
+  constructor() {
     super();
     this.state = {
-      username: '',
-      name: '',
-      surname: ''
-    }
+      username: "",
+      name: "",
+      surname: "",
+      subscribed: false
+    };
   }
 
   handleChange = (e) => {
-    console.log('event', e);
+    console.log("event", e);
+    const {value, name, checked, target} = e.target;
     // this.setState({ username: e.target.value });
-    this.setState(prevSteate => {
-      return { ...prevSteate, [e.target.name]: e.target.value }
-    });
+    if (e.target.type === "checkbox") {
+      this.setState((prevSteate) => {
+        return { ...prevSteate, [name]: checked };
+      });
+    } else {
+      this.setState((prevSteate) => {
+        return { ...prevSteate, [name]: value 
+        };
+      });
+    }
   };
   render() {
     return (
@@ -115,6 +129,18 @@ constructor() {
             label="surname"
             variant="outlined"
             name="surname"
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.subscribed}
+                onChange={this.handleChange}
+                name="subscribed"
+                color="primary"
+              />
+            }
+            label="Subscribed"
           />
         </form>
       </>
