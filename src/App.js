@@ -1,4 +1,5 @@
 import React, { useState, useEffect, use } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
 import "./App.css";
 import {
   Button,
@@ -17,16 +18,39 @@ const App = () => {
 
   const [users, setUsers] = useState([]);
 
+  const deleteUser = user => {
+    const newUsers = users.filter(el => el.email !== user.email);
+    setUsers(newUsers);
+  }
+
+  const handleSubmit = (user) => {
+    if(users.find(el => el.email === user.email)) {
+      return alert("Utente già iscritto");;
+    }
+    setUsers( [...users, user]);
+  }
+
   return (
     <>
-      <Form/>
+      <Form handleSubmit= {handleSubmit}/>
       <hr></hr>
-      <UsersTable users={users}/>
+      <UsersTable users={users} deleteUser={deleteUser}/>
     </>
   );
 };
 
-const Form = () => {
+const INITIAL_FORM_STATE = {
+  fullname: "",
+  email: "",
+  password: "",
+  city: "",
+  province: "",
+  street: "",
+  streetNumber: "",
+  postalCode: "",
+};
+
+const Form = ({handleSubmit}) => {
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -46,6 +70,15 @@ const Form = () => {
     }));
   };
 
+  const handleCheckSubmit = () => {
+    const { fullname, email, password, city, province, street, streetNumber, postalCode } = formData;
+    return !fullname || !email || !password || !city || !province || !street || !streetNumber || !postalCode;
+  }
+
+  const onSubmit = () => {
+    handleSubmit(formData);
+    setFormData(INITIAL_FORM_STATE);
+  };
   return (
     <Grid container spacing={3} justifyContent="flex-start" alignItems="center">
       <Grid item xs={12} sm={6} lg={4}>
@@ -129,24 +162,36 @@ const Form = () => {
           label="StreetNumber"
         />
       </Grid>
+      <Grid item xs={12}>
+        <Button color="primary" disabled={handleCheckSubmit()} variant="contained" onClick={() => handleSubmit(formData)}>
+          SUBMIT
+        </Button>
+      </Grid>
     </Grid>
   );
 };
 
-const UsersTable = (props) => {
+const UsersTable = ({deleteUser, users}) => {
   return(
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Fullname</TableCell>
-            <TableCell >Email</TableCell>
+            <TableCell>Email</TableCell>
             <TableCell >Address</TableCell>
-            {/* <TableCell align="right">Delete</TableCell> */}
+            <TableCell align="center">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.users.map((user, i) => (
+          {
+            !users?.length && (
+              <TableRow>
+                <TableCell colSpan={4} align="center">Nessun utente iscritto</TableCell>
+              </TableRow>
+            )
+          }
+          {users?.map((user, i) => (
             <TableRow
               key={i}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -156,6 +201,9 @@ const UsersTable = (props) => {
               </TableCell>
               <TableCell >{user.email}</TableCell>
               <TableCell align="right">{`${user.street} ${user.streetNumber} ${user.city} (${user.province}) - ${user.postalCode}`}
+              </TableCell>
+              <TableCell align="center">
+                <DeleteIcon onClick={() => deleteUser(user)} style={{cursor: 'pointer'}} />
               </TableCell>
             </TableRow>
           ))}
